@@ -14,14 +14,13 @@ export default class Chatbox extends Component {
     handleChange = (event) => {
         var message = event.target.value;
         this.setState({ currentMessage: message });
-        console.log(this.state.currentMessage)
     }
     handleSendMessage = () =>{
         this.props.sendMessage(this.state.currentMessage)
         this.setState({ currentMessage: "" })
     }
     handleKeyDown = event => {
-        if (event.key === 'Enter') 
+        if (event.key === 'Enter' && this.state.currentMessage.trim() !== "") 
             this.handleSendMessage()
     }
     render() {
@@ -30,24 +29,32 @@ export default class Chatbox extends Component {
                 {message}
             </ListGroup.Item>
         )
+        if( !this.props.currentRoom)
+            return (
+                <Card style={{height: '100vh'}}>
+
+                </Card>
+
+            )
 
         return (
-            <Card style={{ height: '100vh' }}>
+
+            <Card style={{height: '100vh'}}>
                 <Card.Header>
                     <h4> {this.props.currentRoom.name} </h4>
-                    <p> {this.props.currentRoom.participants.map(e => e.name).join(', ')} </p>
+                    {/* <p> {this.props.currentRoom.participants.map(e => e.name).join(', ')} </p> */}
                 </Card.Header>
-                <Card.Body>
+                <Card.Body style={{overflowY: 'auto'}}>
                     <ListGroup>
                         <FlatList
-                            list={this.props.messages}
+                            list={this.props.currentRoom.messages}
                             renderItem={renderMessage}
                             renderWhenEmpty={() => <p className='text-center'> Much silence. </p>}
                         />
 
                     </ListGroup>
                 </Card.Body>
-                <Card.Footer >
+                <Card.Footer  >
                     <InputGroup className="m-2">
                         <FormControl onKeyDown={this.handleKeyDown} onChange={this.handleChange} id="inlineFormInputGroup" placeholder="Type message..." value={this.state.currentMessage} />
                         <InputGroup.Append className=''>

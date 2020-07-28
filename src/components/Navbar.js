@@ -22,6 +22,10 @@ export default class NavBar extends Component {
                     <NavLink className='btn btn-info text-light' variant="light" to='/register' >
                         Register
                     </NavLink>
+                    <NavLink className='btn btn-danger text-light' variant="light" onClick={ () =>{ localStorage.removeItem('token');     window.location.reload(false); }} to='/login' >
+                        Logout
+                    </NavLink>
+
                 </Navbar.Collapse>
             </Navbar>
 

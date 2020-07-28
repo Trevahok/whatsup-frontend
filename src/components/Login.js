@@ -21,8 +21,8 @@ class Login extends React.Component {
       this.setState({loggedIn : true }) 
       
     }catch(error){
-      console.log(error)
-      if(error.reponse && error.response.status === 401) this.setState({errors:  error.response.data.errors })
+      console.log()
+      if(  error.response.status !== 200 ) this.setState({errors:  error.response.data.errors })
       else this.setState({ errors: ['Unknown error occured'] })
     }
 

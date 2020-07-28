@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
-import { Navbar, Nav} from 'react-bootstrap'
+import { Navbar, Nav } from 'react-bootstrap'
 import {
-  NavLink
+    NavLink
 } from "react-router-dom";
 
 export default class NavBar extends Component {
     render() {
         return (
 
-            <Navbar  bg='primary' variant="success" expand="md" >
+            <Navbar bg='primary' variant="success" expand="md" >
                 <Navbar.Brand >
                     <NavLink className=' text-light' to='/' > Whatsup </NavLink>
                 </Navbar.Brand>
@@ -16,9 +16,12 @@ export default class NavBar extends Component {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
                     </Nav>
-                        <NavLink className='btn btn-success text-light' variant="light" to='/login' >
-                            Login
-                        </NavLink>
+                    <NavLink className='btn btn-success text-light' variant="light" to='/login' >
+                        Login
+                    </NavLink>
+                    <NavLink className='btn btn-info text-light' variant="light" to='/register' >
+                        Register
+                    </NavLink>
                 </Navbar.Collapse>
             </Navbar>
 

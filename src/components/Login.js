@@ -1,5 +1,5 @@
 import React from "react"
-import { Alert, Form, Button, Card, Container, } from 'react-bootstrap'
+import { Alert, Form, Button, Card,  } from 'react-bootstrap'
 import axios from 'axios'
 class Login extends React.Component {
   constructor(props) {
@@ -23,6 +23,7 @@ class Login extends React.Component {
     }catch(error){
       console.log(error)
       if(error.reponse && error.response.status === 401) this.setState({errors:  error.response.data.errors })
+      else this.setState({ errors: ['Unknown error occured'] })
     }
 
   }

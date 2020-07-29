@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import {Button, Card, Row, Col, Container, InputGroup, FormControl, ListGroup } from 'react-bootstrap'
+import {OverlayTrigger, Tooltip,   Button, Card, Row, Col, Container, InputGroup, FormControl, ListGroup } from 'react-bootstrap'
 import FlatList from 'flatlist-react'
-import { CaretRight, Search, Plus } from 'react-bootstrap-icons';
+import { CaretRight, Search, Plus, ChatLeft } from 'react-bootstrap-icons';
 
 
 export default class Sidebar extends Component {
@@ -10,12 +10,13 @@ export default class Sidebar extends Component {
         this.state = {
             searchTerm: "",
             roomName : "",
+            searchRoomId: "",
         }
     }
     render() {
         const renderRoom = (room, idx) => (
 
-            <ListGroup.Item id={room._id} key={idx} variant='secondary' className='my-2 btn btn-info text-left' onClick={() => this.props.switchRoom(idx)}>
+            <ListGroup.Item id={room._id} key={room._id} variant='secondary' className='my-2 btn btn-outline-info text-left' onClick={() => this.props.switchRoom(idx)}>
                 <Row>
                     <Col>
                         {room.name}
@@ -33,9 +34,9 @@ export default class Sidebar extends Component {
                <Card  style={{ height: '100vh' }}>
                     <Card.Header >
                         <InputGroup className="m-0">
-                            <FormControl id="inlineFormInputGroup" placeholder="Search Rooms..." onChange={e => this.setState({ searchTerm: e.target.value })} />
+                            <FormControl id="roomInput" placeholder="Search Rooms..." onChange={e => this.setState({ searchTerm: e.target.value })} />
                             <InputGroup.Append className='success'>
-                                <InputGroup.Text className='bg-success'><Search /></InputGroup.Text>
+                                <InputGroup.Text className='bg-primary'><Search /></InputGroup.Text>
                             </InputGroup.Append>
                         </InputGroup>
                     </Card.Header>
@@ -59,13 +60,24 @@ export default class Sidebar extends Component {
                     </Card.Body>
                     <Card.Footer>
                         <InputGroup className="m-0">
-                            <FormControl id="inlineFormInputGroup" placeholder="Create Room Name..." onChange={e => this.setState({ roomName: e.target.value })} />
+                            <FormControl id="createRoomInput" placeholder="Create Room Name..." onChange={e => this.setState({ roomName: e.target.value })} />
                             <InputGroup.Append className='primary'>
                                 <Button variant='info' onClick={()=>this.props.createRoom(this.state.roomName)}>
                                     <Plus/>
                                 </Button>
                             </InputGroup.Append>
                         </InputGroup>
+                        <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">ID length is 24 characters.</Tooltip>}>
+
+                        <InputGroup className="m-0">
+                            <FormControl id="joinRoomInput" placeholder="Join Room ID..." onChange={e => this.setState({ searchRoomId: e.target.value })} />
+                            <InputGroup.Append className='primary'>
+                                <Button variant='warning' onClick={()=> { if(this.state.searchRoomId.length === 24 )  return this.props.joinRoom(this.state.searchRoomId) } }>
+                                    <ChatLeft/>
+                                </Button>
+                            </InputGroup.Append>
+                        </InputGroup>
+                        </OverlayTrigger>
 
                     </Card.Footer>
                 </Card>

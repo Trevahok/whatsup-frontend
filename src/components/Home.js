@@ -5,6 +5,7 @@ import Chatbox from './Chatbox'
 import io from 'socket.io-client'
 import { Redirect } from 'react-router-dom'
 import axios from 'axios'
+import  Loading  from './Loading'
 
 export default class Home extends React.Component {
     constructor(props) {
@@ -14,7 +15,8 @@ export default class Home extends React.Component {
             rooms: [],
             currentRoom: null,
             messages: [],
-            errors: []
+            errors: [], 
+            loading: false,
         }
     }
     componentDidMount = async () => {
@@ -24,8 +26,10 @@ export default class Home extends React.Component {
             this.setState({ redirect: true })
             return
         }
-        this.fetchRooms()
         this.addSocket()
+        this.setState({loading: true})
+        await this.fetchRooms()
+        this.setState({loading: false})
     }
     addSocket = () => {
         this.socket = io.connect(process.env.REACT_APP_SERVER_URL)
@@ -48,12 +52,14 @@ export default class Home extends React.Component {
 
     }
 
-    switchRoom = (roomIdx) => {
+    switchRoom = async (roomIdx) => {
         if (this.state.currentRoom)
             this.socket.emit('leaveRoom', { room: this.state.rooms[this.state.currentRoom]._id })
         this.socket.emit('joinRoom', { room: this.state.rooms[roomIdx]._id })
         this.setState({ currentRoom: roomIdx })
-        this.fetchMessages(roomIdx)
+        this.setState({loading: true})
+        await this.fetchMessages(roomIdx)
+        this.setState({loading: false})
 
     }
 
@@ -74,7 +80,9 @@ export default class Home extends React.Component {
         await axios.post(process.env.REACT_APP_ROOM_URL, { name: name },
             { headers: { Authorization: this.token } }
         )
-        this.fetchRooms()
+        this.setState({loading: true})
+        await this.fetchRooms()
+        this.setState({loading: false})
 
     }
     joinRoom = async (roomid) => {
@@ -82,7 +90,9 @@ export default class Home extends React.Component {
             await axios.post(process.env.REACT_APP_ROOM_URL + '/' + roomid + '/participants', {},
                 { headers: { Authorization: this.token } }
             )
-            this.fetchRooms()
+        this.setState({loading: true})
+        await this.fetchRooms()
+        this.setState({loading: false})
         }
         catch (error) {
             if (error.response.status !== 200) this.setState({ errors: error.response.data.errors })
@@ -96,7 +106,9 @@ export default class Home extends React.Component {
             await axios.delete(process.env.REACT_APP_ROOM_URL + '/' + roomid + '/participants',
                 { headers: { Authorization: this.token } }
             )
-            this.fetchRooms()
+        this.setState({loading: true})
+        await this.fetchRooms()
+        this.setState({loading: false})
             this.setState({ currentRoom: null })
         }
         catch (error) {
@@ -123,7 +135,9 @@ export default class Home extends React.Component {
                         <Chatbox leaveRoom={this.leaveRoom} messages={this.state.messages} sendMessage={this.sendMessage} currentRoom={this.state.rooms[this.state.currentRoom]} />
                     </Col>
                 </Row>
+                <Loading show={this.state.loading} />
             </Container>
+
 
         )
     }

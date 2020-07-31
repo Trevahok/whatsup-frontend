@@ -14,6 +14,19 @@ export default class Chatbox extends Component {
     toHHMMSS = (date) => {
         return new Date(date).toISOString().substr(11, 8);
     }
+     formatDate = (date) => {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+    
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+    
+        return [year, month, day].join('-');
+    }
 
     handleSendMessage = () => {
         this.props.sendMessage(this.state.currentMessage.trim())
@@ -83,7 +96,7 @@ export default class Chatbox extends Component {
                             list={this.props.messages}
                             renderItem={renderMessage}
                             renderWhenEmpty={() => <p className='text-center'> Since nobody is talking, let me ask. Whatsup? </p>}
-                            groupBy={(el, idx) => new Date(el.createdAt).getHours()}
+                            groupBy={(el, idx) => this.formatDate( new Date(el.createdAt))} 
                         />
 
                     </ListGroup>

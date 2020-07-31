@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { OverlayTrigger, Tooltip, Button, Card, Row, Col, Container, InputGroup, FormControl, ListGroup } from 'react-bootstrap'
 import FlatList from 'flatlist-react'
 import { CaretRight, Search, Plus, ChatLeft } from 'react-bootstrap-icons';
-
+import Loading from './Loading'
 
 export default class Sidebar extends Component {
     constructor(props) {
@@ -11,7 +11,25 @@ export default class Sidebar extends Component {
             searchTerm: "",
             roomName: "",
             searchRoomId: "",
+            loading: false
         }
+    }
+    handleCreateRoom = async () => {
+
+        this.setState({ loading: true })
+        await this.props.createRoom(this.state.roomName)
+        this.setState({ loading: false })
+        this.setState({ roomName: "" })
+
+    }
+    handleJoinRoom = async () => {
+        if (this.state.searchRoomId.length === 24) {
+            this.setState({ searchRoomId: "" });
+            this.setState({ loading: true })
+            this.props.joinRoom(this.state.searchRoomId);
+            this.setState({ loading: false })
+        }
+
     }
     render() {
         const renderRoom = (room, idx) => (
@@ -62,7 +80,7 @@ export default class Sidebar extends Component {
                         <InputGroup className="m-0">
                             <FormControl id="createRoomInput" placeholder="Create Room Name..." value={this.state.roomName} onChange={e => this.setState({ roomName: e.target.value })} />
                             <InputGroup.Append className='primary'>
-                                <Button variant='info' onClick={() => { this.props.createRoom(this.state.roomName); this.setState({roomName: ""}) }   }> 
+                                <Button variant='info' onClick={() => this.handleCreateRoom()}>
                                     <Plus />
                                 </Button>
                             </InputGroup.Append>
@@ -70,9 +88,9 @@ export default class Sidebar extends Component {
                         <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">ID length is 24 characters.</Tooltip>}>
 
                             <InputGroup className="m-0">
-                                <FormControl value ={this.state.searchRoomId} id="joinRoomInput" placeholder="Join Room ID..." onChange={e => this.setState({ searchRoomId: e.target.value })} />
+                                <FormControl value={this.state.searchRoomId} id="joinRoomInput" placeholder="Join Room ID..." onChange={e => this.setState({ searchRoomId: e.target.value })} />
                                 <InputGroup.Append className='primary'>
-                                    <Button variant='warning' onClick={() => { if (this.state.searchRoomId.length === 24){ this.setState({searchRoomId: ""}); this.props.joinRoom(this.state.searchRoomId); } }}>
+                                    <Button variant='warning' onClick={() => this.handleJoinRoom()}>
                                         <ChatLeft />
                                     </Button>
                                 </InputGroup.Append>
@@ -81,6 +99,7 @@ export default class Sidebar extends Component {
 
                     </Card.Footer>
                 </Card>
+                <Loading show={this.state.loading} />
             </Container>
 
 

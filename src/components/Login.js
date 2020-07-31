@@ -1,6 +1,7 @@
 import React from "react"
 import { Alert, Form, Button, Card, } from 'react-bootstrap'
 import axios from 'axios'
+import { Redirect } from "react-router-dom";
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -9,6 +10,7 @@ class Login extends React.Component {
       email: "",
       password: "",
       loggedIn: false,
+      redirect: false,
     };
   }
   submitData = async (event) => {
@@ -31,10 +33,13 @@ class Login extends React.Component {
   }
   render() {
     var success = null;
-    if (this.state.loggedIn)
+    if (this.state.loggedIn){
       success = (<Alert variant='success'> Sucessfully Logged In </Alert>)
+      setTimeout( () => this.setState({redirect:true}) , 1000)
+    }
+    if (this.state.redirect)
+      return (<Redirect to='/' />)
     return (
-
       <Card>
         <Card.Header variant='primary' className="text-center bg-primary text-white"  >
           Login

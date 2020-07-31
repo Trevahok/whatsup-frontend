@@ -1,7 +1,7 @@
-
 import React from "react"
 import { Alert, Form, Button, Card, } from 'react-bootstrap'
 import axios from 'axios'
+import {Redirect } from 'react-router-dom'
 export default class Register extends React.Component {
     constructor(props) {
         super(props);
@@ -11,6 +11,7 @@ export default class Register extends React.Component {
             email: "",
             password: "",
             registered: false,
+            redirect: false
         };
     }
     submitData = async (event) => {
@@ -30,8 +31,12 @@ export default class Register extends React.Component {
     }
     render() {
         var success = null;
-        if (this.state.registered)
+        if (this.state.registered){
             success = (<Alert variant='success'> Sucessfully Registered, Please Log In </Alert>)
+            setTimeout(()=> this.setState({redirect: true}) , 1000)
+        }
+        if( this.state.redirect)
+            return (<Redirect to='/login' />)
         return (
 
             <Card>

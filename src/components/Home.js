@@ -28,7 +28,7 @@ export default class Home extends React.Component {
         this.addSocket()
     }
     addSocket = () => {
-        this.socket = io.connect('http://localhost:8000')
+        this.socket = io.connect(process.env.REACT_APP_SERVER_URL)
         this.socket.on('message', (data) => {
             console.log(data, 'event message')
             this.setState({ messages: [...this.state.messages, data] })

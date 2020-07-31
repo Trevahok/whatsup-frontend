@@ -17,7 +17,7 @@ export default class Register extends React.Component {
         event.preventDefault()
         try {
 
-             await axios.post(process.env.REACT_APP_REGISTER_URL, { name: this.state.name, email: this.state.email, password: this.state.password });
+            await axios.post(process.env.REACT_APP_REGISTER_URL, { name: this.state.name, email: this.state.email, password: this.state.password });
             this.setState({ registered: true })
 
         } catch (error) {
@@ -44,8 +44,8 @@ export default class Register extends React.Component {
                         this.state.errors.map((error, idx) => (
                             <Alert key={idx} variant='danger'  >
                                 {error}
-                            </Alert> 
-                            )
+                            </Alert>
+                        )
                         )
                     }
                     {success}

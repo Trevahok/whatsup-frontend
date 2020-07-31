@@ -18,36 +18,36 @@ class App extends React.Component {
   render() {
     return (
 
-        <Router history={history}>
-          <NavBar />
-          <Switch>
-            <Route exact path='/login'  >
-              <Container fluid>
-                <Row>
-                  <Col></Col>
-                  <Col className="mt-5 col-md-6 col-md-offset-3 ">
-                    <Login />
-                  </Col>
-                  <Col></Col>
-                </Row>
-              </Container>
+      <Router history={history}>
+        <NavBar />
+        <Switch>
+          <Route exact path='/login'  >
+            <Container fluid>
+              <Row>
+                <Col></Col>
+                <Col className="mt-5 col-md-6 col-md-offset-3 ">
+                  <Login />
+                </Col>
+                <Col></Col>
+              </Row>
+            </Container>
 
-            </Route>
-            <Route exact path='/register'  >
-              <Container fluid>
-                <Row>
-                  <Col></Col>
-                  <Col className="mt-5 col-md-6 col-md-offset-3 ">
-                    <Register />
-                  </Col>
-                  <Col></Col>
-                </Row>
-              </Container>
+          </Route>
+          <Route exact path='/register'  >
+            <Container fluid>
+              <Row>
+                <Col></Col>
+                <Col className="mt-5 col-md-6 col-md-offset-3 ">
+                  <Register />
+                </Col>
+                <Col></Col>
+              </Row>
+            </Container>
 
-            </Route>
-            <Route exact path='/' component={Home} />
-          </Switch>
-        </Router>
+          </Route>
+          <Route exact path='/' component={Home} />
+        </Switch>
+      </Router>
 
     );
 

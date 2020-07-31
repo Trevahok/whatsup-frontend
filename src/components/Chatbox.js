@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Badge, Row, Col, ListGroup, InputGroup, FormControl, Card, Button } from 'react-bootstrap'
-import { ArrowUpCircleFill } from 'react-bootstrap-icons'
+import { Container, Badge, Row, Col, ListGroup, InputGroup, FormControl, Card, Button } from 'react-bootstrap'
+import { ArrowUpCircleFill, BoxArrowRight, } from 'react-bootstrap-icons'
 import FlatList from 'flatlist-react'
 
 
@@ -11,6 +11,10 @@ export default class Chatbox extends Component {
             currentMessage: ""
         }
     }
+    toHHMMSS = (date) => {
+        return new Date(date).toISOString().substr(11, 8);
+    }
+
     handleSendMessage = () => {
         this.props.sendMessage(this.state.currentMessage.trim())
         this.setState({ currentMessage: "" })
@@ -19,50 +23,67 @@ export default class Chatbox extends Component {
         if (event.key === 'Enter' && this.state.currentMessage.trim() !== "")
             this.handleSendMessage()
     }
-    render() {
+
+    render = () => {
         const renderMessage = (message, idx) => {
-            const date = new Date(message.createdAt)
             return (
                 <ListGroup.Item key={idx}>
-                    <Row>
-                        <Col>
-                            {message.data}
-                        </Col>
-                        <Col xs={2}>
-                            <Badge pill variant='secondary' >
-                                {date.toDateString()}
-                            </Badge>
-                        </Col>
-                    </Row>
+                    <Container fluid>
+                        <small className='text-muted'><small>{message.from} </small></small>
+                        <Row>
+                            <Col>
+                                {message.data} 
+                            </Col>
+                            <Col sm={1}>
+                                <Badge pill variant='secondary' >
+                                    {` ${this.toHHMMSS(message.createdAt)} `}
+                                </Badge>
+                            </Col>
+                        </Row>
+                    </Container>
                 </ListGroup.Item>
             )
         }
         if (!this.props.currentRoom)
             return (
-                <Card style={{ height: '100vh' }}>
-                    <Card.Body style={{ flex: 1, justifyContent: 'center' }}>
-                        Click on a chat to get started
-                    </Card.Body>
-
-                </Card>
-
+                <Container style={{marginTop:'30%'}} className='text-center'>
+                    Hey there, Click on a chat to get started !
+                </Container>
             )
 
         return (
 
             <Card style={{ height: '100vh' }}>
                 <Card.Header>
-                    <h4> {this.props.currentRoom.name} </h4>
-                    <p> {this.props.currentRoom.participants.map(e => e.name).join(', ')} </p>
-                    <p>Join this room using the ID: {this.props.currentRoom._id}</p>
+                    <Row>
+                        <Col>
+                            <Row>
+                                <Col>
+                                    <h4> {this.props.currentRoom.name} </h4>
+                                    <p> {this.props.currentRoom.participants.map(e => e.name).join(', ')} </p>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <p>Join this room using the ID: {this.props.currentRoom._id}</p>
+                                </Col>
+                            </Row>
+
+                        </Col>
+                        <Col xs={1}>
+                            <Button variant='danger' onClick={() => this.props.leaveRoom(this.props.currentRoom._id)}>
+                                <BoxArrowRight />
+                            </Button>
+                        </Col>
+                    </Row>
                 </Card.Header>
-                <Card.Body style={{ overflowY: 'auto' }}>
+                <Card.Body style={{ overflowY: 'auto' }} >
                     <ListGroup>
                         <FlatList
                             list={this.props.messages}
                             renderItem={renderMessage}
                             renderWhenEmpty={() => <p className='text-center'> Since nobody is talking, let me ask. Whatsup? </p>}
-                            groupBy
+                            groupBy={(el, idx) => new Date(el.createdAt).getHours()}
                         />
 
                     </ListGroup>

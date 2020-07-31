@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {OverlayTrigger, Tooltip,   Button, Card, Row, Col, Container, InputGroup, FormControl, ListGroup } from 'react-bootstrap'
+import { OverlayTrigger, Tooltip, Button, Card, Row, Col, Container, InputGroup, FormControl, ListGroup } from 'react-bootstrap'
 import FlatList from 'flatlist-react'
 import { CaretRight, Search, Plus, ChatLeft } from 'react-bootstrap-icons';
 
@@ -9,7 +9,7 @@ export default class Sidebar extends Component {
         super(props)
         this.state = {
             searchTerm: "",
-            roomName : "",
+            roomName: "",
             searchRoomId: "",
         }
     }
@@ -31,7 +31,7 @@ export default class Sidebar extends Component {
 
         return (
             <Container fluid className='p-0'>
-               <Card  style={{ height: '100vh' }}>
+                <Card style={{ height: '100vh' }}>
                     <Card.Header >
                         <InputGroup className="m-0">
                             <FormControl id="roomInput" placeholder="Search Rooms..." onChange={e => this.setState({ searchTerm: e.target.value })} />
@@ -40,7 +40,7 @@ export default class Sidebar extends Component {
                             </InputGroup.Append>
                         </InputGroup>
                     </Card.Header>
-                    <Card.Body style={{overflowY :'auto'}}>
+                    <Card.Body style={{ overflowY: 'auto' }}>
                         <ListGroup className=' m-0 '>
                             <FlatList
                                 list={this.props.rooms}
@@ -60,23 +60,23 @@ export default class Sidebar extends Component {
                     </Card.Body>
                     <Card.Footer>
                         <InputGroup className="m-0">
-                            <FormControl id="createRoomInput" placeholder="Create Room Name..." onChange={e => this.setState({ roomName: e.target.value })} />
+                            <FormControl id="createRoomInput" placeholder="Create Room Name..." value={this.state.roomName} onChange={e => this.setState({ roomName: e.target.value })} />
                             <InputGroup.Append className='primary'>
-                                <Button variant='info' onClick={()=>this.props.createRoom(this.state.roomName)}>
-                                    <Plus/>
+                                <Button variant='info' onClick={() => { this.props.createRoom(this.state.roomName); this.setState({roomName: ""}) }   }> 
+                                    <Plus />
                                 </Button>
                             </InputGroup.Append>
                         </InputGroup>
                         <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">ID length is 24 characters.</Tooltip>}>
 
-                        <InputGroup className="m-0">
-                            <FormControl id="joinRoomInput" placeholder="Join Room ID..." onChange={e => this.setState({ searchRoomId: e.target.value })} />
-                            <InputGroup.Append className='primary'>
-                                <Button variant='warning' onClick={()=> { if(this.state.searchRoomId.length === 24 )  return this.props.joinRoom(this.state.searchRoomId) } }>
-                                    <ChatLeft/>
-                                </Button>
-                            </InputGroup.Append>
-                        </InputGroup>
+                            <InputGroup className="m-0">
+                                <FormControl value ={this.state.searchRoomId} id="joinRoomInput" placeholder="Join Room ID..." onChange={e => this.setState({ searchRoomId: e.target.value })} />
+                                <InputGroup.Append className='primary'>
+                                    <Button variant='warning' onClick={() => { if (this.state.searchRoomId.length === 24){ this.setState({searchRoomId: ""}); this.props.joinRoom(this.state.searchRoomId); } }}>
+                                        <ChatLeft />
+                                    </Button>
+                                </InputGroup.Append>
+                            </InputGroup>
                         </OverlayTrigger>
 
                     </Card.Footer>

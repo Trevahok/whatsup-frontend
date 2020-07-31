@@ -1,5 +1,5 @@
 import React from "react"
-import { Alert, Form, Button, Card,  } from 'react-bootstrap'
+import { Alert, Form, Button, Card, } from 'react-bootstrap'
 import axios from 'axios'
 class Login extends React.Component {
   constructor(props) {
@@ -11,44 +11,46 @@ class Login extends React.Component {
       loggedIn: false,
     };
   }
-  submitData =  async (event) => {
+  submitData = async (event) => {
     event.preventDefault()
-    try{
+    try {
 
-      const res = await axios.post(process.env.REACT_APP_LOGIN_URL  , {email: this.state.email , password: this.state.password});
+      const res = await axios.post(process.env.REACT_APP_LOGIN_URL, { email: this.state.email, password: this.state.password });
       const token = res.data.token
+      const user = res.data.user
       localStorage.setItem('token', token)
-      this.setState({loggedIn : true }) 
-      
-    }catch(error){
+      localStorage.setItem('user', JSON.stringify(user))
+      this.setState({ loggedIn: true })
+
+    } catch (error) {
       console.log()
-      if(  error.response.status !== 200 ) this.setState({errors:  error.response.data.errors })
+      if (error.response.status !== 200) this.setState({ errors: error.response.data.errors })
       else this.setState({ errors: ['Unknown error occured'] })
     }
 
   }
   render() {
     var success = null;
-      if( this.state.loggedIn)
-        success =  (<Alert variant='success'> Sucessfully Logged In </Alert>)
+    if (this.state.loggedIn)
+      success = (<Alert variant='success'> Sucessfully Logged In </Alert>)
     return (
 
       <Card>
         <Card.Header variant='primary' className="text-center bg-primary text-white"  >
-          Login 
+          Login
 
         </Card.Header>
         <Card.Body>
-          { this.state.errors.map(( error, idx ) =>(
-              <Alert key={idx} variant='danger'  >
-                {error}
-              </Alert>
+          {this.state.errors.map((error, idx) => (
+            <Alert key={idx} variant='danger'  >
+              {error}
+            </Alert>
 
-              )
-            )
+          )
+          )
           }
-          { success }
-          <Form onSubmit = {this.submitData}>
+          {success}
+          <Form onSubmit={this.submitData}>
             <Form.Group controlId="formBasicEmail"  >
               <Form.Label>Email address</Form.Label>
               <Form.Control type="email" placeholder="Enter email" onChange={e => this.setState({ email: e.target.value })} />

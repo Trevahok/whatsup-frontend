@@ -10,21 +10,22 @@ export default class Chatbox extends Component {
         this.state = {
             currentMessage: ""
         }
+        this.myRef = null 
     }
     toHHMMSS = (date) => {
         return new Date(date).toISOString().substr(11, 8);
     }
-     formatDate = (date) => {
+    formatDate = (date) => {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
             day = '' + d.getDate(),
             year = d.getFullYear();
-    
-        if (month.length < 2) 
+
+        if (month.length < 2)
             month = '0' + month;
-        if (day.length < 2) 
+        if (day.length < 2)
             day = '0' + day;
-    
+
         return [year, month, day].join('-');
     }
 
@@ -37,6 +38,7 @@ export default class Chatbox extends Component {
             this.handleSendMessage()
     }
 
+
     render = () => {
         const renderMessage = (message, idx) => {
             return (
@@ -45,7 +47,7 @@ export default class Chatbox extends Component {
                         <small className='text-muted'><small>{message.from} </small></small>
                         <Row>
                             <Col>
-                                {message.data} 
+                                {message.data}
                             </Col>
                             <Col sm={1}>
                                 <Badge pill variant='secondary' >
@@ -59,7 +61,7 @@ export default class Chatbox extends Component {
         }
         if (!this.props.currentRoom)
             return (
-                <Container style={{marginTop:'30%'}} className='text-center'>
+                <Container style={{ marginTop: '30%' }} className='text-center'>
                     Hey there, Click on a chat to get started !
                 </Container>
             )
@@ -90,14 +92,15 @@ export default class Chatbox extends Component {
                         </Col>
                     </Row>
                 </Card.Header>
-                <Card.Body style={{ overflowY: 'auto' }} >
-                    <ListGroup>
+                <Card.Body style={{ overflowY: 'auto' }}  >
+                    <ListGroup id='chat'>
                         <FlatList
                             list={this.props.messages}
                             renderItem={renderMessage}
                             renderWhenEmpty={() => <p className='text-center'> Since nobody is talking, let me ask. Whatsup? </p>}
-                            groupBy={(el, idx) => this.formatDate( new Date(el.createdAt))} 
+                            groupBy={(el, idx) => this.formatDate(new Date(el.createdAt))}
                         />
+                        <ListGroup.Item  style={{display: 'inline'}}ref={ (ref) => { if (ref ) { ref.scrollIntoView({ behavior: 'smooth', block: 'start' }) } }} ></ListGroup.Item>
 
                     </ListGroup>
                 </Card.Body>

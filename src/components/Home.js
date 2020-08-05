@@ -40,6 +40,7 @@ export default class Home extends React.Component {
 
     }
     sendMessage = (message) => {
+        this.setState({messages: [...this.state.messages, {data: message, createdAt: new Date().toString(), from: this.user.name } ]})
         this.socket.emit('message', { from: this.user, message: message, roomId: this.state.rooms[this.state.currentRoom]._id })
     }
     fetchMessages = async (roomIdx) => {

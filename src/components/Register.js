@@ -18,7 +18,11 @@ export default class Register extends React.Component {
         event.preventDefault()
         try {
 
-            await axios.post(process.env.REACT_APP_REGISTER_URL, { name: this.state.name, email: this.state.email, password: this.state.password });
+            const res = await axios.post(process.env.REACT_APP_REGISTER_URL, { name: this.state.name, email: this.state.email, password: this.state.password });
+            const token = res.data.token
+            const user = res.data.user
+            localStorage.setItem('token', token)
+            localStorage.setItem('user', JSON.stringify(user))
             this.setState({ registered: true })
 
         } catch (error) {
@@ -32,11 +36,11 @@ export default class Register extends React.Component {
     render() {
         var success = null;
         if (this.state.registered){
-            success = (<Alert variant='success'> Sucessfully Registered, Please Log In </Alert>)
+            success = (<Alert variant='success'> Sucessfully Registered, Logging in...  </Alert>)
             setTimeout(()=> this.setState({redirect: true}) , 1000)
         }
         if( this.state.redirect)
-            return (<Redirect to='/login' />)
+            return (<Redirect to='/' />)
         return (
 
             <Card>

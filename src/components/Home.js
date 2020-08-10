@@ -34,7 +34,6 @@ export default class Home extends React.Component {
     addSocket = () => {
         this.socket = io.connect(process.env.REACT_APP_SERVER_URL)
         this.socket.on('message', (data) => {
-            console.log(data, 'event message')
             this.setState({ messages: [...this.state.messages, data] })
         })
 
@@ -44,11 +43,9 @@ export default class Home extends React.Component {
         this.socket.emit('message', { from: this.user, message: message, roomId: this.state.rooms[this.state.currentRoom]._id })
     }
     fetchMessages = async (roomIdx) => {
-        console.log(this.state)
-        const res = await axios.get(process.env.REACT_APP_ROOM_URL + '/' + this.state.rooms[roomIdx]._id, {
+        const res = await axios.get( `${process.env.REACT_APP_ROOM_URL}/${this.state.rooms[roomIdx]._id}/messages `, {
             headers: { Authorization: this.token }
         })
-        console.log(res.data)
         this.setState({ messages: res.data.messages })
 
     }
@@ -72,6 +69,7 @@ export default class Home extends React.Component {
             this.setState({ rooms: res.data })
         }
         catch (error) {
+            this.setState({ redirect: true })
             alert(error)
         }
 
@@ -88,7 +86,7 @@ export default class Home extends React.Component {
     }
     joinRoom = async (roomid) => {
         try {
-            await axios.post(process.env.REACT_APP_ROOM_URL + '/' + roomid + '/participants', {},
+            await axios.post(process.env.REACT_APP_ROOM_URL + '/' + roomid + '/participants', {userid : this.user._id},
                 { headers: { Authorization: this.token } }
             )
         this.setState({loading: true})

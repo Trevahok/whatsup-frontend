@@ -5,16 +5,12 @@ import { Row, Col, Container } from 'react-bootstrap';
 import NavBar from './components/Navbar'
 import { Switch, Route, Router } from 'react-router-dom'
 import Home from './components/Home'
+import VideoChat from './components/VideoChat'
 import createHistory from 'history/createBrowserHistory'
 
 const history = createHistory()
 
 class App extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-    }
-  }
   render() {
     return (
 
@@ -46,6 +42,7 @@ class App extends React.Component {
 
           </Route>
           <Route exact path='/' component={Home} />
+          <Route  path='/call/:roomId' component={VideoChat} />
         </Switch>
       </Router>
 

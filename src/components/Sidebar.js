@@ -15,7 +15,8 @@ export default class Sidebar extends Component {
         }
     }
     handleCreateRoom = async () => {
-
+        if( this.state.roomName === "" )
+            return;
         this.setState({ loading: true })
         await this.props.createRoom(this.state.roomName)
         this.setState({ loading: false })
@@ -53,8 +54,8 @@ export default class Sidebar extends Component {
                     <Card.Header >
                         <InputGroup className="m-0">
                             <FormControl id="roomInput" placeholder="Search Rooms..." onChange={e => this.setState({ searchTerm: e.target.value })} />
-                            <InputGroup.Append className='success'>
-                                <InputGroup.Text className='bg-primary'><Search /></InputGroup.Text>
+                            <InputGroup.Append className='primary'>
+                                <InputGroup.Text className='bg-muted'><Search /></InputGroup.Text>
                             </InputGroup.Append>
                         </InputGroup>
                     </Card.Header>

@@ -1,9 +1,6 @@
 import React from 'react'
 import { Container, Badge, Row, Col, ListGroup, } from 'react-bootstrap'
 export default class Message extends React.Component {
-    toHHMMSS = (date) => {
-        return new Date(date).toISOString().substr(11, 8);
-    }
     render = ()=> {
         return (
             <ListGroup.Item key={this.props.key}>
@@ -15,7 +12,7 @@ export default class Message extends React.Component {
                         </Col>
                         <Col sm={1}>
                             <Badge pill variant='secondary' >
-                                {` ${this.toHHMMSS(this.props.message.createdAt)} `}
+                                {` ${ new Date(this.props.message.createdAt).toLocaleTimeString() } `}
                             </Badge>
                         </Col>
                     </Row>

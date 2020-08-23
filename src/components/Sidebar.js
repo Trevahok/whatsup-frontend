@@ -3,6 +3,7 @@ import { OverlayTrigger, Tooltip, Button, Card, Row, Col, Container, InputGroup,
 import FlatList from 'flatlist-react'
 import { CaretRight, Search, Plus, ChatLeft } from 'react-bootstrap-icons';
 import Loading from './Loading'
+import { Link } from 'react-router-dom';
 
 export default class Sidebar extends Component {
     constructor(props) {
@@ -35,11 +36,8 @@ export default class Sidebar extends Component {
     render() {
         const renderRoom = (room, idx) => (
 
-            <ListGroup.Item id={room._id} key={room._id} variant='secondary' className='my-2 btn btn-outline-info text-left' onClick={() => this.props.switchRoom(idx)}>
-                <Row>
-                    <Col>
-                        {room.name}
-                    </Col>
+            <ListGroup.Item id={room._id} key={room._id} variant='secondary' className='my-2 btn btn-outline-info text-left shadow-sm' onClick={() => this.props.switchRoom(idx)}>
+                <Row> <Col> {room.name} </Col>
                     <Col xs={1}>
                         <CaretRight />
                     </Col>
@@ -51,7 +49,7 @@ export default class Sidebar extends Component {
         return (
             <Container fluid className='p-0'>
                 <Card style={{ height: '100vh' }}>
-                    <Card.Header >
+                    <Card.Header className='shadow-sm'>
                         <InputGroup className="m-0">
                             <FormControl id="roomInput" placeholder="Search Rooms..." onChange={e => this.setState({ searchTerm: e.target.value })} />
                             <InputGroup.Append className='primary'>
@@ -65,7 +63,7 @@ export default class Sidebar extends Component {
                                 list={this.props.rooms}
                                 renderItem={renderRoom}
                                 renderWhenEmpty={() => (
-                                    <ListGroup.Item className='  '> Nothing to show here </ListGroup.Item>
+                                    <ListGroup.Item className='shadow-sm'> Nothing to show here </ListGroup.Item>
                                 )
                                 }
                                 searchTerm={this.state.searchTerm}
@@ -77,7 +75,7 @@ export default class Sidebar extends Component {
                             />
                         </ListGroup>
                     </Card.Body>
-                    <Card.Footer>
+                    <Card.Footer >
                         <InputGroup className="m-0">
                             <FormControl id="createRoomInput" placeholder="Create Room Name..." value={this.state.roomName} onChange={e => this.setState({ roomName: e.target.value })} />
                             <InputGroup.Append className='primary'>

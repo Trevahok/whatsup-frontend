@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Badge, Row, Col, ListGroup, InputGroup, FormControl, Card, Button } from 'react-bootstrap'
+import { Container, Row, Col, ListGroup, InputGroup, FormControl, Card, Button } from 'react-bootstrap'
 import { ArrowUpCircle, BoxArrowRight, CameraVideo, } from 'react-bootstrap-icons'
 import FlatList from 'flatlist-react'
 import { Link } from 'react-router-dom'
@@ -54,7 +54,7 @@ export default class Chatbox extends Component {
         return (
 
             <Card style={{ height: '100vh' }}>
-                <Card.Header>
+                <Card.Header className='shadow-sm'>
                     <Row>
                         <Col>
                             <Row>

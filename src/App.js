@@ -3,18 +3,15 @@ import Login from './components/Login'
 import Register from './components/Register'
 import { Row, Col, Container } from 'react-bootstrap';
 import NavBar from './components/Navbar'
-import { Switch, Route, Router } from 'react-router-dom'
+import { Switch, Route, BrowserRouter } from 'react-router-dom'
 import Home from './components/Home'
 import VideoChat from './components/VideoChat'
-import createHistory from 'history/createBrowserHistory'
-
-const history = createHistory()
 
 class App extends React.Component {
   render() {
     return (
 
-      <Router history={history}>
+      <BrowserRouter >
         <NavBar />
         <Switch>
           <Route exact path='/login'  >
@@ -44,7 +41,7 @@ class App extends React.Component {
           <Route exact path='/' component={Home} />
           <Route  path='/call/:roomId' component={VideoChat} />
         </Switch>
-      </Router>
+      </BrowserRouter>
 
     );
 
